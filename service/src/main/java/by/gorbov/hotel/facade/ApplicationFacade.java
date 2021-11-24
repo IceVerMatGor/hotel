@@ -70,6 +70,8 @@ public interface ApplicationFacade {
 
     List<RequestDto> getAllRequestSortedBy(String name);
 
+    void addRequest(Long clientId, RequestDto request);
+
     //Reservation methods
     void saveReservation(ReservationDto dto);
 
@@ -82,6 +84,8 @@ public interface ApplicationFacade {
     List<ReservationDto> getAllReservation();
 
     List<ReservationDto> getAllReservationSortedBy(String name);
+
+    void addReservation(RequestDto request);
 
     //Room methods
     void saveRoom(RoomDto dto);

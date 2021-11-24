@@ -1,5 +1,6 @@
 package by.gorbov.hotel.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class RequestDto extends AbstractDto{

@@ -3,6 +3,7 @@ package by.gorbov.hotel.controller;
 import by.gorbov.hotel.dto.HotelDto;
 import by.gorbov.hotel.facade.ApplicationFacade;
 import by.gorbov.hotel.model.Room;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +19,13 @@ public class HotelController {
     }
 
     @GetMapping("/{id}")
-    public HotelDto getHotelById(@PathVariable Long id) {
-        return applicationFacade.getByIdHotel(id);
+    public ResponseEntity<HotelDto> getHotelById(@PathVariable Long id) {
+        return ResponseEntity.ok(applicationFacade.getByIdHotel(id));
     }
 
     @GetMapping("/all")
-    public List<HotelDto> getAllHotels() {
-        return applicationFacade.getAllHotel();
+    public ResponseEntity<List<HotelDto>> getAllHotels() {
+        return ResponseEntity.ok(applicationFacade.getAllHotel());
     }
 
 //    @GetMapping("/{id}/rooms")
@@ -33,7 +34,20 @@ public class HotelController {
 //    }
 
     @PostMapping("/save")
-    public void saveHotel(@RequestBody HotelDto hotel) {
+    public ResponseEntity<Void> saveHotel(@RequestBody HotelDto hotel) {
         applicationFacade.saveHotel(hotel);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteHotel(@PathVariable Long id) {
+        applicationFacade.deleteHotel(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<Void> updateHotel(@RequestBody HotelDto hotel) {
+        applicationFacade.updateHotel(hotel);
+        return ResponseEntity.ok().build();
     }
 }

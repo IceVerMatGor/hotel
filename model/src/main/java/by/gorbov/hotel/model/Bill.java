@@ -17,4 +17,12 @@ public class Bill extends AbstractEntity {
     public void setPrice(Integer price) {
         this.price = price;
     }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }

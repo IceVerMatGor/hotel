@@ -2,6 +2,7 @@ package by.gorbov.hotel.model;
 
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class Client extends AbstractEntity {
 
     @OneToMany(mappedBy = "client")
     private List<Request> requests;
+
+    @ManyToMany
+    private List<Hotel> hotels;
 
     public List<Reservation> getReservations() {
         return reservations;
@@ -59,5 +63,13 @@ public class Client extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Hotel> getHotels() {
+        return hotels;
+    }
+
+    public void setHotels(List<Hotel> hotels) {
+        this.hotels = hotels;
     }
 }

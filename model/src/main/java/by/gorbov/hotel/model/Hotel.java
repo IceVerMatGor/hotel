@@ -4,12 +4,12 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Hotel extends AbstractEntity{
+public class Hotel extends AbstractEntity {
 
     @OneToMany(mappedBy = "hotel")
     private List<Employee> employees;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "hotels")
     private List<Client> clients;
 
     @OneToMany(mappedBy = "hotel")

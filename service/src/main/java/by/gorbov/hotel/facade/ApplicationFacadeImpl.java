@@ -181,6 +181,11 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
     }
 
     @Override
+    public void addRequest(Long clientId, RequestDto request) {
+        requestService.addRequest(clientId, request);
+    }
+
+    @Override
     public void saveReservation(ReservationDto dto) {
         reservationService.save(dto);
     }
@@ -208,6 +213,11 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
     @Override
     public List<ReservationDto> getAllReservationSortedBy(String name) {
         return null;
+    }
+
+    @Override
+    public void addReservation(RequestDto request) {
+        reservationService.addReservation(request);
     }
 
     @Override

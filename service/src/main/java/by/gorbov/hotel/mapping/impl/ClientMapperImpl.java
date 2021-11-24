@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ClientMapperImpl extends AbstractMapper<ClientDto, Client> implements ClientMapper {
+
+
+
     @Override
     protected Class<Client> getEntityClass() {
         return Client.class;
@@ -16,4 +19,6 @@ public class ClientMapperImpl extends AbstractMapper<ClientDto, Client> implemen
     protected Class<ClientDto> getDtoClass() {
         return ClientDto.class;
     }
+
+
 }

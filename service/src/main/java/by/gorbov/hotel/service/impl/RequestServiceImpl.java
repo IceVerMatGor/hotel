@@ -7,6 +7,8 @@ import by.gorbov.hotel.model.Request;
 import by.gorbov.hotel.service.api.RequestService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class RequestServiceImpl extends AbstractService<Request, RequestDao, RequestDto, RequestMapper> implements RequestService {
 
@@ -29,4 +31,10 @@ public class RequestServiceImpl extends AbstractService<Request, RequestDao, Req
         return requestMapper;
     }
 
+    @Override
+    @Transactional
+    public void addRequest(Long clientId, RequestDto request) {
+        request.setClientId(clientId);
+        requestDao.save(requestMapper.toEntity(request));
+    }
 }

@@ -1,5 +1,6 @@
 package by.gorbov.hotel.model;
 
+
 import javax.persistence.*;
 import java.util.Date;
 

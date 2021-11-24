@@ -4,6 +4,7 @@ import by.gorbov.hotel.dao.api.ClientDao;
 import by.gorbov.hotel.dao.api.RequestDao;
 import by.gorbov.hotel.dao.api.ReservationDao;
 import by.gorbov.hotel.dto.ClientDto;
+import by.gorbov.hotel.dto.RequestDto;
 import by.gorbov.hotel.mapping.api.ClientMapper;
 import by.gorbov.hotel.model.Client;
 import by.gorbov.hotel.service.api.ClientService;
@@ -33,11 +34,6 @@ public class ClientServiceImpl extends AbstractService<Client, ClientDao, Client
     @Override
     protected ClientMapper getDefaultMapper() {
         return clientMapper;
-    }
-
-    @Override
-    public void addRequest(Long clientId, Long requestId) {
-        clientDao.getById(clientId).getRequests().add(requestDao.getById(requestId));
     }
 
     @Override

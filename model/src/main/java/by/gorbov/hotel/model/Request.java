@@ -10,7 +10,7 @@ public class Request extends AbstractEntity{
     private Client client;
     private Integer places;
     private String roomClass;
-    private String status;
+    private String status = "no";
     private Date startDate;
     private Date endDate;
 

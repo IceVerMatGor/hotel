@@ -5,9 +5,9 @@ import java.util.List;
 public class ClientDto extends AbstractDto{
     private String email;
     private String name;
-    private List<Long> billsId;
-    private List<Long> reservationsId;
-    private List<Long> requestsId;
+    private List<BillDto> bills;
+    private List<ReservationDto> reservations;
+    private List<RequestDto> requests;
 
     public String getEmail() {
         return email;
@@ -25,27 +25,27 @@ public class ClientDto extends AbstractDto{
         this.name = name;
     }
 
-    public List<Long> getBillsId() {
-        return billsId;
+    public List<BillDto> getBills() {
+        return bills;
     }
 
-    public void setBillsId(List<Long> billsId) {
-        this.billsId = billsId;
+    public void setBills(List<BillDto> bills) {
+        this.bills = bills;
     }
 
-    public List<Long> getReservationsId() {
-        return reservationsId;
+    public List<ReservationDto> getReservations() {
+        return reservations;
     }
 
-    public void setReservationsId(List<Long> reservationsId) {
-        this.reservationsId = reservationsId;
+    public void setReservations(List<ReservationDto> reservations) {
+        this.reservations = reservations;
     }
 
-    public List<Long> getRequestsId() {
-        return requestsId;
+    public List<RequestDto> getRequests() {
+        return requests;
     }
 
-    public void setRequestsId(List<Long> requestsId) {
-        this.requestsId = requestsId;
+    public void setRequests(List<RequestDto> requests) {
+        this.requests = requests;
     }
 }

@@ -3,14 +3,17 @@ package by.gorbov.hotel.mapping.impl;
 import by.gorbov.hotel.dto.AbstractDto;
 import by.gorbov.hotel.mapping.api.Mapper;
 import by.gorbov.hotel.model.AbstractEntity;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
 
+
 public abstract class AbstractMapper<D extends AbstractDto, E extends AbstractEntity> implements Mapper<D, E> {
 
-    private final ModelMapper mapper = new ModelMapper();
-
+    @Autowired
+    ModelMapper mapper;
     protected abstract Class<E> getEntityClass();
 
     protected abstract Class<D> getDtoClass();
@@ -23,5 +26,29 @@ public abstract class AbstractMapper<D extends AbstractDto, E extends AbstractEn
     @Override
     public E toEntity(D dto) {
         return Objects.isNull(dto) ? null : mapper.map(dto, getEntityClass());
+    }
+
+    Converter<E, D> toDtoConverter() {
+        return context -> {
+            E source = context.getSource();
+            D destination = context.getDestination();
+            mapSpecificFields(source, destination);
+            return context.getDestination();
+        };
+    }
+
+    Converter<D, E> toEntityConverter() {
+        return context -> {
+            D source = context.getSource();
+            E destination = context.getDestination();
+            mapSpecificFields(source, destination);
+            return context.getDestination();
+        };
+    }
+
+    void mapSpecificFields(E source, D destination) {
+    }
+
+    void mapSpecificFields(D source, E destination) {
     }
 }

@@ -2,10 +2,8 @@ package by.gorbov.hotel.controller;
 
 import by.gorbov.hotel.dto.RoomDto;
 import by.gorbov.hotel.facade.ApplicationFacade;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,12 +18,31 @@ public class RoomController {
     }
 
     @GetMapping("/{id}")
-    private RoomDto getRoomById(@PathVariable Long id) {
-        return applicationFacade.getByIdRoom(id);
+    public ResponseEntity<RoomDto> getRoomById(@PathVariable Long id) {
+        return ResponseEntity.ok(applicationFacade.getByIdRoom(id));
     }
 
     @GetMapping("/all")
-    private List<RoomDto> getAllRooms(){
-        return applicationFacade.getAllRoom();
+    public ResponseEntity<List<RoomDto>> getAllRooms() {
+        return ResponseEntity.ok(applicationFacade.getAllRoom());
     }
+
+    @PostMapping("/save")
+    public ResponseEntity<Void> saveRoom(@RequestBody RoomDto room) {
+        applicationFacade.saveRoom(room);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("{id}/delete")
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
+        applicationFacade.deleteRoom(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<Void> updateRoom(@RequestBody RoomDto room) {
+        applicationFacade.updateRoom(room);
+        return ResponseEntity.ok().build();
+    }
+
 }
