@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractService<E extends AbstractEntity, D extends Dao<E>, Dto extends AbstractDto, M extends Mapper<Dto, E>> implements Service<Dto> {
@@ -58,6 +59,15 @@ public abstract class AbstractService<E extends AbstractEntity, D extends Dao<E>
 
     @Override
     public List<Dto> getAllSortedBy(String name) {
-        return null;
+        List<E> entities = new ArrayList<>();
+        switch (name){
+            case "id":{
+                entities = getDefaultDao().getAllSortedBy(Comparator.comparing(AbstractEntity::getId));
+            }
+            break;
+        }
+        List<Dto> dto = new ArrayList<>();
+        entities.forEach(e -> dto.add(getDefaultMapper().toDto(e)));
+        return dto;
     }
 }

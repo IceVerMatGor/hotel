@@ -28,7 +28,6 @@ public class BillController {
 
     @PostMapping("/save")
     public ResponseEntity<Void> createBill(@RequestBody BillDto bill) {
-
         applicationFacade.saveBill(bill);
         return ResponseEntity.ok().build();
     }

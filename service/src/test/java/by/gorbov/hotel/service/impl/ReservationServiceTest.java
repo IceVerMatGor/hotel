@@ -7,12 +7,9 @@ import by.gorbov.hotel.dao.api.ReservationDao;
 import by.gorbov.hotel.dao.api.RoomDao;
 import by.gorbov.hotel.dto.RequestDto;
 
-import by.gorbov.hotel.dto.ReservationDto;
 import by.gorbov.hotel.mapping.api.RequestMapper;
 import by.gorbov.hotel.mapping.api.ReservationMapper;
-import by.gorbov.hotel.model.Request;
-import by.gorbov.hotel.model.Reservation;
-import by.gorbov.hotel.model.Room;
+import by.gorbov.hotel.model.*;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -50,13 +47,13 @@ public class ReservationServiceTest {
         for (int i = 0; i < 2; i++) {
             Room room = new Room();
             room.setId((long) i + 1);
-            room.setPlaces(i + 1);
-            room.setRoomClass(i + 1 + "-star");
+            room.setPlace(i + 1);
+            room.setRoomClass(RoomClass.TWO_STAR);
             room.setPrice((i + 1) * 1000);
             List<Reservation> reservations = new ArrayList<>();
             Reservation reservation = new Reservation();
-            reservation.setStartDate(new Date(2001, 10, 12));
-            reservation.setEndDate(new Date(2002, 10, 12));
+            reservation.setStartDate(new GregorianCalendar(2001, Calendar.NOVEMBER, 12).getTime());
+            reservation.setEndDate(new GregorianCalendar(2002, Calendar.NOVEMBER, 12).getTime());
             reservation.setRoom(room);
             reservations.add(reservation);
             reservations.add(reservation);
@@ -73,26 +70,27 @@ public class ReservationServiceTest {
     @Test
     public void findRoomTest() {
         RequestDto request = new RequestDto();
-        request.setRoomClass("2-star");
-        request.setStatus("no");
-        request.setPlaces(1);
-        request.setStartDate(new Date(2003, 12, 12));
-        request.setEndDate(new Date(2004, 12, 12));
+        request.setRoomClass(RoomClass.TWO_STAR.name());
+        request.setStatus(RequestStatus.NOT_VIEWED.name());
+        request.setPlace(2);
+        request.setStartDate(new GregorianCalendar(2003, Calendar.NOVEMBER, 12).getTime());
+        request.setEndDate(new GregorianCalendar(2004, Calendar.NOVEMBER, 12).getTime());
 
-        Room room = reservationService.findRoom(request);
-        Assert.isTrue(2L == room.getId(), "select wrong room");
+        Optional<Room> room = reservationService.findRoom(request);
+        room.ifPresent(value -> Assert.isTrue(2L == value.getId(), "select wrong room"));
     }
 
     @Test
-    public void findRoomFailTest() {
+    public void addReservationNoSuitableRoomTest() {
         RequestDto request = new RequestDto();
-        request.setRoomClass("2-star");
-        request.setStatus("no");
-        request.setPlaces(1);
-        request.setStartDate(new Date(2001, 12, 12));
-        request.setEndDate(new Date(2002, 12, 12));
-
-        Assertions.assertThrows(NullPointerException.class, () -> reservationService.findRoom(request));
+        request.setRoomClass(RoomClass.TWO_STAR.name());
+        request.setStatus(RequestStatus.NOT_VIEWED.name());
+        request.setPlace(1);
+        request.setStartDate(new GregorianCalendar(2001, Calendar.DECEMBER, 12).getTime());
+        request.setEndDate(new GregorianCalendar(2002, Calendar.DECEMBER, 12).getTime());
+        reservationService.addReservation(request);
+        Assert.isTrue(Objects.equals(request.getStatus(), RequestStatus.NO_SUITABLE_ROOM.name()));
+        //Assertions.assertThrows(NullPointerException.class, () -> reservationService.findRoom(request));
     }
 
     @Test
@@ -100,14 +98,14 @@ public class ReservationServiceTest {
         RequestDto request = new RequestDto();
         request.setId(1L);
         request.setClientId(1L);
-        request.setRoomClass("2-star");
-        request.setStatus("no");
-        request.setPlaces(1);
-        request.setStartDate(new Date(2003, 12, 12));
-        request.setEndDate(new Date(2004, 12, 12));
+        request.setRoomClass(RoomClass.TWO_STAR.name());
+        request.setStatus(RequestStatus.NOT_VIEWED.name());
+        request.setPlace(1);
+        request.setStartDate(new GregorianCalendar(2003, Calendar.NOVEMBER, 12).getTime());
+        request.setEndDate(new GregorianCalendar(2004, Calendar.NOVEMBER, 12).getTime());
 
 
         reservationService.addReservation(request);
-        Assert.isTrue(Objects.equals(request.getStatus(), "ok"), "request status not changed");
+        Assert.isTrue(Objects.equals(request.getStatus(), RequestStatus.BOOKED.name()), "request status not changed");
     }
 }

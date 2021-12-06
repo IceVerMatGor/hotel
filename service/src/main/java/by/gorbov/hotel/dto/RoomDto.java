@@ -6,7 +6,7 @@ public class RoomDto extends AbstractDto{
 
     private List<ReservationDto> reservations;
     private Long hotelId;
-    private Integer places;
+    private Integer place;
     private Integer price;
     private String roomClass;
 
@@ -26,12 +26,12 @@ public class RoomDto extends AbstractDto{
         this.hotelId = hotelId;
     }
 
-    public Integer getPlaces() {
-        return places;
+    public Integer getPlace() {
+        return place;
     }
 
-    public void setPlaces(Integer places) {
-        this.places = places;
+    public void setPlace(Integer place) {
+        this.place = place;
     }
 
     public Integer getPrice() {

@@ -13,9 +13,9 @@ public class Room extends AbstractEntity {
     @ManyToOne
     private Hotel hotel;
 
-    private Integer places;
+    private Integer place;
     private Integer price;
-    private String roomClass;
+    private RoomClass roomClass;
 
     public List<Reservation> getReservations() {
         return reservations;
@@ -33,12 +33,12 @@ public class Room extends AbstractEntity {
         this.hotel = hotel;
     }
 
-    public Integer getPlaces() {
-        return places;
+    public Integer getPlace() {
+        return place;
     }
 
-    public void setPlaces(Integer places) {
-        this.places = places;
+    public void setPlace(Integer place) {
+        this.place = place;
     }
 
     public Integer getPrice() {
@@ -49,11 +49,11 @@ public class Room extends AbstractEntity {
         this.price = price;
     }
 
-    public String getRoomClass() {
+    public RoomClass getRoomClass() {
         return roomClass;
     }
 
-    public void setRoomClass(String roomClass) {
+    public void setRoomClass(RoomClass roomClass) {
         this.roomClass = roomClass;
     }
 }

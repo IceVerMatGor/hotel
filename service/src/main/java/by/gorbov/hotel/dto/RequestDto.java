@@ -1,12 +1,11 @@
 package by.gorbov.hotel.dto;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class RequestDto extends AbstractDto{
 
     private Long clientId;
-    private Integer places;
+    private Integer place;
     private String roomClass;
     private String status;
     private Date startDate;
@@ -20,12 +19,12 @@ public class RequestDto extends AbstractDto{
         this.clientId = clientId;
     }
 
-    public Integer getPlaces() {
-        return places;
+    public Integer getPlace() {
+        return place;
     }
 
-    public void setPlaces(Integer places) {
-        this.places = places;
+    public void setPlace(Integer place) {
+        this.place = place;
     }
 
     public String getRoomClass() {

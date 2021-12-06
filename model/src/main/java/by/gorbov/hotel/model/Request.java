@@ -3,14 +3,16 @@ package by.gorbov.hotel.model;
 import javax.persistence.*;
 import java.util.Date;
 
+import static by.gorbov.hotel.model.RequestStatus.NOT_VIEWED;
+
 @Entity
 public class Request extends AbstractEntity{
 
     @ManyToOne
     private Client client;
-    private Integer places;
-    private String roomClass;
-    private String status = "no";
+    private Integer place;
+    private RoomClass roomClass;
+    private RequestStatus status = NOT_VIEWED;
     private Date startDate;
     private Date endDate;
 
@@ -22,27 +24,27 @@ public class Request extends AbstractEntity{
         this.client = client;
     }
 
-    public Integer getPlaces() {
-        return places;
+    public Integer getPlace() {
+        return place;
     }
 
-    public void setPlaces(Integer places) {
-        this.places = places;
+    public void setPlace(Integer place) {
+        this.place = place;
     }
 
-    public String getRoomClass() {
+    public RoomClass getRoomClass() {
         return roomClass;
     }
 
-    public void setRoomClass(String roomClass) {
+    public void setRoomClass(RoomClass roomClass) {
         this.roomClass = roomClass;
     }
 
-    public String getStatus() {
+    public RequestStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(RequestStatus status) {
         this.status = status;
     }
 

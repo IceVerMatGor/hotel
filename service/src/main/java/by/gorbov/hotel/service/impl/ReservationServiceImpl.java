@@ -8,10 +8,7 @@ import by.gorbov.hotel.dto.RequestDto;
 import by.gorbov.hotel.dto.ReservationDto;
 import by.gorbov.hotel.mapping.api.RequestMapper;
 import by.gorbov.hotel.mapping.api.ReservationMapper;
-import by.gorbov.hotel.model.Bill;
-import by.gorbov.hotel.model.Client;
-import by.gorbov.hotel.model.Reservation;
-import by.gorbov.hotel.model.Room;
+import by.gorbov.hotel.model.*;
 import by.gorbov.hotel.service.api.ReservationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Objects;
+import java.util.Optional;
 
 
 @Service
@@ -60,35 +58,43 @@ public class ReservationServiceImpl extends AbstractService<Reservation, Reserva
         reservation.setClient(requestMapper.toEntity(request).getClient());
         reservation.setStartDate(request.getStartDate());
         reservation.setEndDate(request.getEndDate());
-        reservation.setRoom(findRoom(request));
-        getDefaultDao().save(reservation);
-        LOGGER.info("reservation saved per roomId {}",reservation.getRoom().getId());
 
-        request.setStatus("ok");
-        requestDao.update(requestMapper.toEntity(request));
-        LOGGER.info("request with id {} updated",request.getId());
+        Optional<Room> room = findRoom(request);
+        if (room.isPresent()) {
+            reservation.setRoom(room.get());
+            getDefaultDao().save(reservation);
+            LOGGER.info("reservation saved per roomId {}", reservation.getRoom().getId());
 
-        Bill bill = new Bill();
-        Client client = new Client();
-        client.setId(request.getClientId());
-        bill.setClient(client);
-        bill.setPrice(reservation.getRoom().getPrice());
-        billDao.save(bill);
-        LOGGER.info("bill {}$ saved per userId {}",bill.getPrice(),client.getId());
+            request.setStatus("BOOKED");
+            requestDao.update(requestMapper.toEntity(request));
+            LOGGER.info("request with id {} updated", request.getId());
+
+            Bill bill = new Bill();
+            Client client = new Client();
+            client.setId(request.getClientId());
+            bill.setClient(client);
+            bill.setPrice(reservation.getRoom().getPrice());
+            billDao.save(bill);
+            LOGGER.info("bill {}$ saved per userId {}", bill.getPrice(), client.getId());
+        } else {
+            request.setStatus(RequestStatus.NO_SUITABLE_ROOM.name());
+            requestDao.update(requestMapper.toEntity(request));
+        }
+
     }
 
-    public Room findRoom(RequestDto request) {
+    public Optional<Room> findRoom(RequestDto request) {
         try {
-            return roomDao.getAll().stream()
-                    .filter(room -> room.getPlaces() >= request.getPlaces())
-                    .filter(room -> Objects.equals(room.getRoomClass(), request.getRoomClass()))
+            return Optional.ofNullable(roomDao.getAll().stream()
+                    .filter(room -> room.getPlace() >= request.getPlace())
+                    .filter(room -> Objects.equals(room.getRoomClass().toString(), request.getRoomClass()))
                     .filter(room -> room.getReservations()
                             .stream().allMatch(res -> Math.max(request.getStartDate().getTime(), res.getStartDate().getTime()) >
                                     Math.min(request.getEndDate().getTime(), res.getEndDate().getTime())))
-                    .findAny().orElseThrow(() -> new NullPointerException("no suitable room for this request " + request));
+                    .findFirst().orElseThrow(() -> new NullPointerException("no suitable room for this request " + request.getClass().getSimpleName())));
         } catch (NullPointerException e) {
             LOGGER.error("room is not found", e);
-            throw new NullPointerException();
+            return Optional.empty();
         }
     }
 }
