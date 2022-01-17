@@ -48,6 +48,7 @@ public class RoomMapperImpl extends AbstractMapper<RoomDto, Room> implements Roo
 
     @Override
     void mapSpecificFields(RoomDto source, Room destination) {
+        if(source.getHotelId()!=null)
         destination.setHotel(hotelDao.getById(source.getHotelId()));
     }
 }

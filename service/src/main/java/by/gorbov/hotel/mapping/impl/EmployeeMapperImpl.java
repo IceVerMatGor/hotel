@@ -47,6 +47,7 @@ public class EmployeeMapperImpl extends AbstractMapper<by.gorbov.hotel.dto.Emplo
 
     @Override
     void mapSpecificFields(EmployeeDto source, Employee destination) {
+        if(source.getHotelId()!=null)
         destination.setHotel(hotelDao.getById(source.getHotelId()));
     }
 }

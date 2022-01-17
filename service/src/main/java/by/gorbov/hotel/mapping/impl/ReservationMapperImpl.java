@@ -58,7 +58,10 @@ public class ReservationMapperImpl extends AbstractMapper<ReservationDto, Reserv
 
     @Override
     void mapSpecificFields(ReservationDto source, Reservation destination) {
+        if(source.getClientId()!=null)
         destination.setClient(clientDao.getById(source.getClientId()));
+
+        if(source.getRoomId()!=null)
         destination.setRoom(roomDao.getById(source.getRoomId()));
     }
 }

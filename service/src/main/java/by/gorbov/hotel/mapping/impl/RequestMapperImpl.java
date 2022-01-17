@@ -47,6 +47,7 @@ public class RequestMapperImpl extends AbstractMapper<RequestDto, Request> imple
 
     @Override
     void mapSpecificFields(RequestDto source, Request destination) {
+        if(source.getClientId()!=null)
         destination.setClient(clientDao.getById(source.getClientId()));
     }
 }

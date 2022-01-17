@@ -50,6 +50,7 @@ public class HotelMapperImpl extends AbstractMapper<HotelDto, Hotel> implements 
 
     @Override
     void mapSpecificFields(HotelDto source, Hotel destination) {
+        if(source.getAdminId()!=null)
         destination.setAdmin(adminDao.getById(source.getAdminId()));
     }
 }

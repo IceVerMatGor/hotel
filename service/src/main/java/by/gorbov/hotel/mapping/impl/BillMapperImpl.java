@@ -48,6 +48,7 @@ public class BillMapperImpl extends AbstractMapper<BillDto, Bill> implements Bil
 
     @Override
     void mapSpecificFields(BillDto source, Bill destination) {
+        if(source.getClientId()!=null)
         destination.setClient(clientDao.getById(source.getClientId()));
     }
 }
